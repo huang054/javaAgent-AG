@@ -13,6 +13,11 @@ import java.security.ProtectionDomain;
  * @create 2018-01-30 18:02
  **/
 public class DurationTransformer implements ClassFileTransformer {
+    private String args;
+
+    public DurationTransformer(String args){
+        this.args=args;
+    }
     @Override
     public byte[] transform(ClassLoader loader, String className,
                             Class classBeingRedefined, ProtectionDomain protectionDomain,
@@ -22,7 +27,8 @@ public class DurationTransformer implements ClassFileTransformer {
         // since this transformer will be called when all the classes are
         // loaded by the classloader, we are restricting the instrumentation
         // using if block only for the Lion class
-        if ("com/rong/kim/common/Lion".equals(className)) {
+
+        if (className.startsWith(args)) {
             System.out.println("Instrumenting......");
             try {
                 ClassPool classPool = ClassPool.getDefault();
